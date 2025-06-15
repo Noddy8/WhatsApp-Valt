@@ -1,9 +1,8 @@
 package com.noddy.statussaver.utils
 
-import androidx.core.net.toUri
 import com.noddy.statussaver.models.MediaModel
 import java.io.File
-import java.util.*
+import java.util.Collections
 
 object SortingUtils {
     const val SORT_DATE_ASC = 0
@@ -15,12 +14,12 @@ object SortingUtils {
 
     fun sortMediaList(list: ArrayList<MediaModel>, sortType: Int): ArrayList<MediaModel> {
         return when (sortType) {
-            SORT_DATE_ASC -> list.sortedBy { File(it.pathUri.toUri()).lastModified() } as ArrayList
-            SORT_DATE_DESC -> list.sortedByDescending { File(it.pathUri.toUri()).lastModified() } as ArrayList
-            SORT_NAME_ASC -> list.sortedBy { it.fileName } as ArrayList
-            SORT_NAME_DESC -> list.sortedByDescending { it.fileName } as ArrayList
-            SORT_SIZE_ASC -> list.sortedBy { File(it.pathUri.toUri()).length() } as ArrayList
-            SORT_SIZE_DESC -> list.sortedByDescending { File(it.pathUri.toUri()).length() } as ArrayList
+            SORT_DATE_ASC -> list.sortedBy { File(it.pathUri.toUri()).lastModified() } as ArrayList<MediaModel>
+            SORT_DATE_DESC -> list.sortedByDescending { File(it.pathUri.toUri()).lastModified() } as ArrayList<MediaModel>
+            SORT_NAME_ASC -> list.sortedBy { it.fileName } as ArrayList<MediaModel>
+            SORT_NAME_DESC -> list.sortedByDescending { it.fileName } as ArrayList<MediaModel>
+            SORT_SIZE_ASC -> list.sortedBy { File(it.pathUri.toUri()).length() } as ArrayList<MediaModel>
+            SORT_SIZE_DESC -> list.sortedByDescending { File(it.pathUri.toUri()).length() } as ArrayList<MediaModel>
             else -> list
         }
     }

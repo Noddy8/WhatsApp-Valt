@@ -19,9 +19,6 @@ import com.noddy.statussaver.utils.SharedPrefUtils
 import com.noddy.statussaver.utils.replaceFragment
 import com.noddy.statussaver.utils.slideFromStart
 import com.noddy.statussaver.utils.slideToEndWithFadeOut
-import com.noddy.statussaver.views.fragments.FragmentAnalytics
-import com.noddy.statussaver.views.fragments.FragmentCalendar
-import com.noddy.statussaver.views.fragments.FragmentFavorites
 import com.noddy.statussaver.views.fragments.FragmentSettings
 import com.noddy.statussaver.views.fragments.FragmentStatus
 
@@ -40,33 +37,49 @@ class MainActivity : AppCompatActivity() {
             requestPermission()
 
             // Load default fragment (WhatsApp Status)
-            loadFragment(Constants.TYPE_WHATSAPP_MAIN)
+            val fragmentWhatsAppStatus = FragmentStatus()
+            val bundle = Bundle()
+            bundle.putString(Constants.FRAGMENT_TYPE_KEY, Constants.TYPE_WHATSAPP_MAIN)
+            replaceFragment(fragmentWhatsAppStatus, bundle)
 
-            // Bottom navigation setup
-            bottomNavigation.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.menu_status -> loadFragment(Constants.TYPE_WHATSAPP_MAIN)
-                    R.id.menu_business_status -> loadFragment(Constants.TYPE_WHATSAPP_BUSINESS)
-                    R.id.menu_favorites -> replaceFragment(FragmentFavorites())
-                    R.id.menu_calendar -> replaceFragment(FragmentCalendar())
-                    R.id.menu_analytics -> replaceFragment(FragmentAnalytics())
-                    R.id.menu_settings -> replaceFragment(FragmentSettings())
+            // Set up bottom navigation
+            bottomNavigation.setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.menu_status -> {
+                        // whatsapp status
+                        val fragmentWhatsAppStatus = FragmentStatus()
+                        val bundle = Bundle()
+                        bundle.putString(Constants.FRAGMENT_TYPE_KEY, Constants.TYPE_WHATSAPP_MAIN)
+                        replaceFragment(fragmentWhatsAppStatus, bundle)
+                        true
+                    }
+
+                    R.id.menu_business_status -> {
+                        // whatsapp business status
+                        val fragmentWhatsAppStatus = FragmentStatus()
+                        val bundle = Bundle()
+                        bundle.putString(
+                            Constants.FRAGMENT_TYPE_KEY,
+                            Constants.TYPE_WHATSAPP_BUSINESS
+                        )
+                        replaceFragment(fragmentWhatsAppStatus, bundle)
+                        true
+                    }
+
+                    R.id.menu_settings -> {
+                        // settings
+                        replaceFragment(FragmentSettings())
+                        true
+                    }
+
                     else -> false
                 }
-                true
             }
+
+            // Set default selected item
             bottomNavigation.selectedItemId = R.id.menu_status
         }
     }
-
-    private fun loadFragment(whatsAppType: String) {
-        val fragment = FragmentStatus()
-        val bundle = Bundle().apply {
-            putString(Constants.FRAGMENT_TYPE_KEY, whatsAppType)
-        }
-        replaceFragment(fragment, bundle)
-    }
-
 
     private val PERMISSION_REQUEST_CODE = 50
     private fun requestPermission() {

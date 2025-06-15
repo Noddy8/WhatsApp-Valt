@@ -3,8 +3,7 @@ package com.noddy.statussaver.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Environment
-import com.noddy.statussaver.R
+import com.noddy.statussaver.utils.FileUtils
 import java.io.File
 import java.util.Date
 
@@ -15,13 +14,13 @@ class CleanUpReceiver : BroadcastReceiver() {
             context.getString(R.string.app_name)
         )
 
-        if (folder.exists() && folder.isDirectory) {
+        if (folder.exists()) {
             val files = folder.listFiles()
             val now = Date().time
             val sevenDays = 7 * 24 * 60 * 60 * 1000L
 
             files?.forEach { file ->
-                if (file.isFile && (now - file.lastModified()) > sevenDays) {
+                if (now - file.lastModified() > sevenDays) {
                     file.delete()
                 }
             }
