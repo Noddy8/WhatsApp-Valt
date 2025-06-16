@@ -1,5 +1,6 @@
 package com.noddy.statussaver.views.fragments
 
+import com.bumptech.glide.Glide
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -64,9 +65,11 @@ class FragmentSavedMediaList : Fragment() {
             RecyclerView.ViewHolder(binding.root) {
 
             fun bind(mediaModel: MediaModel, position: Int) {
-                Glide.with(context)
-                    .load(mediaModel.pathUri)
-                    .into(binding.mediaThumbnail)
+                context?.let {
+                    Glide.with(it)
+                        .load(mediaModel.pathUri)
+                        .into(binding.mediaThumbnail)
+                }
 
                 binding.videoPlayIcon.visibility =
                     if (mediaModel.type == "video") View.VISIBLE else View.GONE
@@ -140,10 +143,6 @@ class FragmentSavedMediaList : Fragment() {
     private fun deleteMedia(media: MediaModel) {
         File(media.pathUri).delete()
         loadSavedMedia()
-    }
-
-    private fun shareMedia(media: MediaModel) {
-        // ... existing share code ...
     }
 
     override fun onDestroyView() {

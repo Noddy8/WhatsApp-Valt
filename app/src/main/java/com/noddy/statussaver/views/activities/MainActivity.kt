@@ -72,6 +72,15 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
 
+//                    R.id.menu_create_status -> {
+//                        startActivity(Intent(this, CreateStatusActivity::class.java))
+//                        true
+//                    }
+                    R.id.menu_direct_message -> {
+                        startActivity(Intent(this@MainActivity, DirectMessageActivity::class.java))
+                        true
+                    }
+
                     R.id.menu_settings -> {
                         // settings
                         replaceFragment(FragmentSettings())

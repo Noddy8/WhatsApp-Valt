@@ -18,6 +18,9 @@
         android:theme="@style/Theme.StatusSaver"
         tools:targetApi="31">
         <activity
+            android:name=".views.activities.DirectMessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.activities.SavedMediaPreviewActivity"
             android:exported="false" />
 

@@ -11,6 +11,7 @@ import com.noddy.statussaver.databinding.ItemImagePreviewBinding
 import com.noddy.statussaver.databinding.ItemVideoPreviewBinding
 import com.noddy.statussaver.models.MediaModel
 
+
 class SavedMediaPreviewAdapter(
     private val mediaList: List<MediaModel>,
     private val activity: android.app.Activity
@@ -63,7 +64,7 @@ class SavedMediaPreviewAdapter(
 
         fun bind(media: MediaModel) {
             // Hide download tools
-            binding.tools.visibility = View.GONE
+            binding.toolsHolder.visibility = View.GONE
 
             // Initialize player
             player = ExoPlayer.Builder(binding.root.context).build()
@@ -85,7 +86,7 @@ class SavedMediaPreviewAdapter(
 
         fun bind(media: MediaModel) {
             // Hide download tools
-            binding.tools.visibility = View.GONE
+            binding.toolsHolder.visibility = View.GONE
 
             // Load image
             binding.zoomableImageView.setImageURI(Uri.parse(media.pathUri))

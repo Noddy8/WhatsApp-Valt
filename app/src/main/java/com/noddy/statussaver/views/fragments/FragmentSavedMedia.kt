@@ -148,41 +148,6 @@ class FragmentSavedMedia : Fragment() {
             loadSavedMedia()
         }
 
-        private fun shareMedia(media: MediaModel) {
-            val file = File(media.pathUri)
-            if (!file.exists()) {
-                Toast.makeText(requireContext(), "File not found", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            val uri = FileProvider.getUriForFile(
-                requireContext(),
-                "${requireContext().packageName}.fileprovider",
-                file
-            )
-
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                type = if (media.type == "video") "video/*" else "image/*"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-
-            // Grant temporary read permission to the content URI
-            val resInfoList = requireContext().packageManager
-                .queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY)
-            for (resolveInfo in resInfoList) {
-                val packageName = resolveInfo.activityInfo.packageName
-                requireContext().grantUriPermission(
-                    packageName,
-                    uri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
-            }
-
-            startActivity(Intent.createChooser(shareIntent, "Share via"))
-        }
-
         override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
