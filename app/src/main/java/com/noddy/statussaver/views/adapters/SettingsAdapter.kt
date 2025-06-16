@@ -1,120 +1,103 @@
 package com.noddy.statussaver.views.adapters
 
-import android.app.AlertDialog
+import android.app.ActionBar
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Switch
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.noddy.statussaver.R
-import com.noddy.statussaver.databinding.ItemAutoCleanBinding
+import com.noddy.statussaver.databinding.DialogGuideBinding
 import com.noddy.statussaver.databinding.ItemSettingsBinding
 import com.noddy.statussaver.models.SettingsModel
-import com.noddy.statussaver.utils.AutoCleanScheduler
-import com.noddy.statussaver.utils.SharedPrefKeys
-import com.noddy.statussaver.utils.SharedPrefUtils
 
 class SettingsAdapter(var list: ArrayList<SettingsModel>, var context: Context) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<SettingsAdapter.viewHolder>() {
 
-    companion object {
-        private const val TYPE_AUTO_CLEAN = 0
-        private const val TYPE_REGULAR = 1
-    }
+    inner class viewHolder(var binding: ItemSettingsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(model: SettingsModel, position: Int) {
+            binding.apply {
+                settingsTitle.text = model.title
+                settingsDesc.text = model.desc
 
-    override fun getItemViewType(position: Int): Int {
-        return if (list[position].title == "Auto Clean") TYPE_AUTO_CLEAN else TYPE_REGULAR
-    }
+                root.setOnClickListener {
+                    when (position) {
+                        0 -> {
+                            // how to use 1st item
+                            val dialog = Dialog(context)
+                            val dialogBinding =
+                                DialogGuideBinding.inflate((context as Activity).layoutInflater)
+                            dialogBinding.okayBtn.setOnClickListener {
+                                dialog.dismiss()
+                            }
+                            dialog.setContentView(dialogBinding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == TYPE_AUTO_CLEAN) {
-            AutoCleanViewHolder(
-                ItemAutoCleanBinding.inflate(
-                    LayoutInflater.from(context),
-                    parent,
-                    false
-                )
-            )
-        } else {
-            RegularViewHolder(
-                ItemSettingsBinding.inflate(
-                    LayoutInflater.from(context),
-                    parent,
-                    false
-                )
-            )
+                            dialog.window?.setLayout(
+                                ActionBar.LayoutParams.MATCH_PARENT,
+                                ActionBar.LayoutParams.WRAP_CONTENT
+                            )
+
+                            dialog.show()
+
+
+                        }
+
+                        2 -> {
+                            MaterialAlertDialogBuilder(context).apply {
+                                setTitle("Disclaimer")
+                                setMessage("Disclaimer Here")
+                                setPositiveButton("Okay", null)
+                                show()
+                            }
+                        }
+
+                        3 -> {
+                            Intent(Intent.ACTION_VIEW, Uri.parse("https://atrii.dev")).apply {
+                                context.startActivity(this)
+                            }
+
+                        }
+
+                        4 -> {
+                            Intent(Intent.ACTION_SEND).apply {
+                                type = "text/plain"
+                                putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+                                putExtra(
+                                    Intent.EXTRA_TEXT,
+                                    "My App is soo cool please download it :https://play.google.com/store/apps/details?id=${context.packageName}"
+                                )
+                                context.startActivity(this)
+                            }
+                        }
+
+                        5 -> {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=" + context.packageName)
+                            ).apply {
+                                context.startActivity(this)
+                            }
+
+                        }
+                    }
+                }
+
+            }
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model = list[position]
-        when (holder) {
-            is AutoCleanViewHolder -> holder.bind(model)
-            is RegularViewHolder -> holder.bind(model, position)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): viewHolder {
+        return viewHolder(ItemSettingsBinding.inflate(LayoutInflater.from(context), parent, false))
     }
 
     override fun getItemCount() = list.size
 
-    inner class AutoCleanViewHolder(val binding: ItemAutoCleanBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: SettingsModel) {
-            binding.title.text = model.title
-            binding.desc.text = model.desc
-
-            val isAutoCleanEnabled = SharedPrefUtils.getPrefBoolean(SharedPrefKeys.PREF_AUTO_CLEAN, false)
-            binding.switchAutoClean.isChecked = isAutoCleanEnabled
-
-            binding.switchAutoClean.setOnCheckedChangeListener { _, isChecked ->
-                SharedPrefUtils.putPrefBoolean(SharedPrefKeys.PREF_AUTO_CLEAN, isChecked)
-                if (isChecked) {
-                    AutoCleanScheduler.scheduleDailyCleanup(context)
-                } else {
-                    AutoCleanScheduler.cancelScheduledCleanup(context)
-                }
-            }
-        }
-    }
-
-    inner class RegularViewHolder(val binding: ItemSettingsBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(model: SettingsModel, position: Int) {
-            binding.settingsTitle.text = model.title
-            binding.settingsDesc.text = model.desc
-
-            binding.root.setOnClickListener {
-                when (position) {
-                    0 -> showGuideDialog()
-                    3 -> showDisclaimerDialog()
-                    4 -> openPrivacyPolicy()
-                    5 -> shareApp()
-                    6 -> rateApp()
-                }
-            }
-        }
-
-        private fun showGuideDialog() {
-            // Implementation
-        }
-
-        private fun showDisclaimerDialog() {
-            AlertDialog.Builder(context)
-                .setTitle("Disclaimer")
-                .setMessage("This app is not affiliated with WhatsApp. Use it responsibly.")
-                .setPositiveButton("OK", null)
-                .show()
-        }
-
-        private fun openPrivacyPolicy() {
-            // Open URL
-        }
-
-        private fun shareApp() {
-            // Share intent
-        }
-
-        private fun rateApp() {
-            // Open Play Store
-        }
+    override fun onBindViewHolder(holder: viewHolder, position: Int) {
+        holder.bind(model = list[position], position)
     }
 }

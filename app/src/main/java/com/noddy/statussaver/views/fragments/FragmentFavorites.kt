@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.noddy.statussaver.data.FavoritesRepo
 import com.noddy.statussaver.databinding.FragmentMediaBinding
 import com.noddy.statussaver.views.adapters.MediaAdapter
 

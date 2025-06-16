@@ -1,4 +1,30 @@
-package com.noddy.statussaver.views.fragments
+package com
+
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayoutMediator
+import com.noddy.statussaver.data.StatusRepo
+import com.noddy.statussaver.databinding.FragmentStatusBinding
+import com.noddy.statussaver.utils.Constants
+import com.noddy.statussaver.utils.SharedPrefKeys
+import com.noddy.statussaver.utils.SharedPrefUtils
+import com.noddy.statussaver.utils.getFolderPermissions
+import com.noddy.statussaver.viewmodels.factories.StatusViewModel
+import com.noddy.statussaver.viewmodels.factories.StatusViewModelFactory
+import com.noddy.statussaver.views.adapters.MediaViewPagerAdapter
+
+
+..statussaver.views.fragments
 
 import android.content.Intent
 import android.os.Bundle

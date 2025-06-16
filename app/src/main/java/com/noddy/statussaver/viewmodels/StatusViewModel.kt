@@ -44,7 +44,7 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
         isPermissionsGranted = wpPermissions && wpBusinessPermissions
         Log.d(TAG, "Status View Model: isPermissions=> $isPermissionsGranted ")
         if (isPermissionsGranted) {
-        Log.d(TAG, "Status View Model: Permissions Already Granted Getting Statuses ")
+            Log.d(TAG, "Status View Model: Permissions Already Granted Getting Statuses ")
             CoroutineScope(Dispatchers.IO).launch {
                 repo.getAllStatuses()
 
@@ -63,7 +63,7 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
                 repo.getAllStatuses()
             }
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 getWhatsAppImages()
                 getWhatsAppVideos()
             }
@@ -74,19 +74,20 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
     fun getWhatsAppImages() {
         wpStatusLiveData.observe(repo.activity as LifecycleOwner) {
             val tempList = ArrayList<MediaModel>()
-            it.forEach {mediaModel->
-                if (mediaModel.type == MEDIA_TYPE_IMAGE){
+            it.forEach { mediaModel ->
+                if (mediaModel.type == MEDIA_TYPE_IMAGE) {
                     tempList.add(mediaModel)
                 }
             }
             whatsAppImagesLiveData.postValue(tempList)
         }
     }
+
     fun getWhatsAppVideos() {
         wpStatusLiveData.observe(repo.activity as LifecycleOwner) {
             val tempList = ArrayList<MediaModel>()
-            it.forEach {mediaModel->
-                if (mediaModel.type == MEDIA_TYPE_VIDEO){
+            it.forEach { mediaModel ->
+                if (mediaModel.type == MEDIA_TYPE_VIDEO) {
                     tempList.add(mediaModel)
                 }
             }
@@ -102,7 +103,7 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
                 repo.getAllStatuses(Constants.TYPE_WHATSAPP_BUSINESS)
             }
 
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 getWhatsAppBusinessImages()
                 getWhatsAppBusinessVideos()
             }
@@ -113,19 +114,20 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
     fun getWhatsAppBusinessImages() {
         wpBusinessStatusLiveData.observe(repo.activity as LifecycleOwner) {
             val tempList = ArrayList<MediaModel>()
-            it.forEach {mediaModel->
-                if (mediaModel.type == MEDIA_TYPE_IMAGE){
+            it.forEach { mediaModel ->
+                if (mediaModel.type == MEDIA_TYPE_IMAGE) {
                     tempList.add(mediaModel)
                 }
             }
             whatsAppBusinessImagesLiveData.postValue(tempList)
         }
     }
+
     fun getWhatsAppBusinessVideos() {
         wpBusinessStatusLiveData.observe(repo.activity as LifecycleOwner) {
             val tempList = ArrayList<MediaModel>()
-            it.forEach {mediaModel->
-                if (mediaModel.type == MEDIA_TYPE_VIDEO){
+            it.forEach { mediaModel ->
+                if (mediaModel.type == MEDIA_TYPE_VIDEO) {
                     tempList.add(mediaModel)
                 }
             }

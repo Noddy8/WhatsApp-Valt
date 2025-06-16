@@ -59,11 +59,7 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer-dash:1.7.1")
     implementation("androidx.media3:media3-ui:1.7.1")
 
-
     implementation("androidx.documentfile:documentfile:1.0.1")
-
-    // Glide
-    implementation("com.github.bumptech.glide:glide:4.15.1")
 
     // Refresh
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
@@ -79,9 +75,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     // Video Player
-    implementation("androidx.media3:media3-exoplayer:1.2.1")
     implementation("androidx.media3:media3-exoplayer-dash:1.2.1")
-    implementation("androidx.media3:media3-ui:1.2.1")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
 
     // Zoomable Image View
     implementation("com.jsibbold:zoomage:1.3.1")
@@ -91,26 +87,5 @@ dependencies {
 
     // Gson for favorites
     implementation("com.google.code.gson:gson:2.10.1")
-
-    // Video Trimmer
-    implementation ("com.github.a914-gowtham:Android-video-trimmer:1.7.0")
-
-    // Manually declare missing dependencies
-    implementation ("com.arthenica:mobile-ffmpeg-min:4.3.1.LTS")
-    implementation ("com.crystal:crystalrangeseekbar:1.1.3")
-
-    // Charts for analytics
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
-
-    // Biometric authentication
-    implementation("androidx.biometric:biometric:1.1.0")
-
-    // Pin lock view
-//    implementation ("com.github.aritraroy:PinLockView:v2.1.0")
-
-    // Calendar view
-    implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
-
-
 
 }

@@ -1,6 +1,5 @@
 package com.noddy.statussaver.views.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,11 +23,10 @@ class FragmentSettings : Fragment() {
         SettingsAdapter(list, requireActivity())
     }
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.apply {
-        settingsRecyclerView.adapter = adapter
+            settingsRecyclerView.adapter = adapter
 
             list.add(
                 SettingsModel(
@@ -60,12 +58,12 @@ class FragmentSettings : Fragment() {
                     desc = "Sharing is caring"
                 )
             )
-//            list.add(
-//                SettingsModel(
-//                    title = "Rate Us",
-//                    desc = "Please support our work by rating on PlayStore"
-//                )
-//            )
+            list.add(
+                SettingsModel(
+                    title = "Rate Us",
+                    desc = "Please support our work by rating on PlayStore"
+                )
+            )
         }
     }
 

@@ -41,17 +41,17 @@ class MediaAdapter(val list: ArrayList<MediaModel>, val context: Context) :
                     if (mediaModel.type == MEDIA_TYPE_IMAGE) {
                         // goto image preview activity
                         Intent().apply {
-                            putExtra(Constants.MEDIA_LIST_KEY,list)
-                            putExtra(Constants.MEDIA_SCROLL_KEY,layoutPosition)
-                            setClass(context,ImagesPreview::class.java)
+                            putExtra(Constants.MEDIA_LIST_KEY, list)
+                            putExtra(Constants.MEDIA_SCROLL_KEY, layoutPosition)
+                            setClass(context, ImagesPreview::class.java)
                             context.startActivity(this)
                         }
                     } else {
                         // goto video preview activity
                         Intent().apply {
-                            putExtra(Constants.MEDIA_LIST_KEY,list)
-                            putExtra(Constants.MEDIA_SCROLL_KEY,layoutPosition)
-                            setClass(context,VideosPreview::class.java)
+                            putExtra(Constants.MEDIA_LIST_KEY, list)
+                            putExtra(Constants.MEDIA_SCROLL_KEY, layoutPosition)
+                            setClass(context, VideosPreview::class.java)
                             context.startActivity(this)
                         }
                     }

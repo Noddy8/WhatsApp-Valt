@@ -54,7 +54,7 @@ class VideoPreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
             }
         }
 
-        fun stopPlayer(){
+        fun stopPlayer() {
             binding.playerView.player?.stop()
         }
     }

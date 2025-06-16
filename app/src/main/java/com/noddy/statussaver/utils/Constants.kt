@@ -38,6 +38,7 @@ object Constants {
             WHATSAPP_PATH_URI_ANDROID
         }
     }
+
     fun getWhatsappBusinessUri(): Uri {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WHATSAPP_BUSINESS_PATH_URI_ANDROID_11

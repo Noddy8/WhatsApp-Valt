@@ -15,28 +15,21 @@ class MediaViewPagerAdapter(
     override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
-            0->{
+        return when (position) {
+            0 -> {
                 // images media fragment
                 val mediaFragment = FragmentMedia()
                 val bundle = Bundle()
-                bundle.putString(Constants.MEDIA_TYPE_KEY,imagesType)
+                bundle.putString(Constants.MEDIA_TYPE_KEY, imagesType)
                 mediaFragment.arguments = bundle
                 mediaFragment
             }
-            1->{
+
+            else -> {
                 // videos media fragment
                 val mediaFragment = FragmentMedia()
                 val bundle = Bundle()
-                bundle.putString(Constants.MEDIA_TYPE_KEY,videosType)
-                mediaFragment.arguments = bundle
-                mediaFragment
-            }
-            else->{
-                // saved media fragment
-                val mediaFragment = FragmentMedia()
-                val bundle = Bundle()
-                bundle.putString(Constants.MEDIA_TYPE_KEY,videosType)
+                bundle.putString(Constants.MEDIA_TYPE_KEY, videosType)
                 mediaFragment.arguments = bundle
                 mediaFragment
             }
