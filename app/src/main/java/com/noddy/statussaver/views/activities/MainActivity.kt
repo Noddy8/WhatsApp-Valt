@@ -11,7 +11,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.FragmentStatus
 import com.noddy.statussaver.R
 import com.noddy.statussaver.databinding.ActivityMainBinding
 import com.noddy.statussaver.utils.Constants
@@ -21,6 +20,7 @@ import com.noddy.statussaver.utils.replaceFragment
 import com.noddy.statussaver.utils.slideFromStart
 import com.noddy.statussaver.utils.slideToEndWithFadeOut
 import com.noddy.statussaver.views.fragments.FragmentSettings
+import com.noddy.statussaver.views.fragments.FragmentStatus
 
 class MainActivity : AppCompatActivity() {
     private val activity = this
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val fragment = supportFragmentManager?.findFragmentById(R.id.fragment_container)
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
         fragment?.onActivityResult(requestCode, resultCode, data)
     }
 }

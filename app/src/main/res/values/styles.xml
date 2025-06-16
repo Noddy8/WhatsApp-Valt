@@ -4,9 +4,11 @@
     <style name="TabText">
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="BottomNavStyle">
         <item name="colorSecondaryContainer">@color/colorPrimaryHighlight</item>
     </style>
+
     <style name="BottomNavigationActiveIndicator">
         <item name="android:color">@color/green_active</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>

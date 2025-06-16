@@ -16,23 +16,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:iconifiedByDefault="false"
-            app:queryHint="Search statuses..."
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryHint="Search statuses..." />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@color/colorPrimary"
-            app:tabIndicatorColor="@color/colorPrimaryHighlight"
-            app:tabTextColor="@color/white"
-            app:tabIndicatorAnimationMode="elastic"
-            app:tabIndicatorFullWidth="true"
-            app:layout_constraintTop_toBottomOf="@+id/search_view"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/search_view"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorColor="@color/colorPrimaryHighlight"
+            app:tabIndicatorFullWidth="true"
+            app:tabTextColor="@color/white" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/status_view_pager"

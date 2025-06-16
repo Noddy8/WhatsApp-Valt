@@ -1,16 +1,21 @@
 package com.noddy.statussaver.views.adapters
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.recyclerview.widget.RecyclerView
 import com.noddy.statussaver.R
 import com.noddy.statussaver.databinding.ItemVideoPreviewBinding
+import com.noddy.statussaver.models.MEDIA_TYPE_IMAGE
 import com.noddy.statussaver.models.MediaModel
 import com.noddy.statussaver.utils.saveStatus
+import java.io.File
 
 class VideoPreviewAdapter(val list: ArrayList<MediaModel>, val context: Context) :
     RecyclerView.Adapter<VideoPreviewAdapter.ViewHolder>() {
@@ -51,11 +56,70 @@ class VideoPreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                     }
                 }
 
+                // Share functionality
+                tools.linearLayout.setOnClickListener {
+                    shareMedia(mediaModel)
+                }
+
             }
         }
 
         fun stopPlayer() {
             binding.playerView.player?.stop()
+        }
+    }
+
+    private fun shareMedia(mediaModel: MediaModel) {
+        try {
+            // Handle different URI formats
+            val uri = when {
+                mediaModel.pathUri.startsWith("content://") -> {
+                    // Already a content URI
+                    Uri.parse(mediaModel.pathUri)
+                }
+                mediaModel.pathUri.startsWith("file://") -> {
+                    // File URI - convert to File and then to content URI
+                    val file = File(Uri.parse(mediaModel.pathUri).path ?: mediaModel.pathUri)
+                    if (file.exists()) {
+                        FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.fileprovider",
+                            file
+                        )
+                    } else {
+                        Toast.makeText(context, "File not found at: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+                        return
+                    }
+                }
+                else -> {
+                    // Plain file path
+                    val file = File(mediaModel.pathUri)
+                    if (file.exists()) {
+                        FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.fileprovider",
+                            file
+                        )
+                    } else {
+                        Toast.makeText(context, "File not found at: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+                        return
+                    }
+                }
+            }
+
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                type = if (mediaModel.type == MEDIA_TYPE_IMAGE) "image/*" else "video/*"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            val chooser = Intent.createChooser(shareIntent, "Share via")
+            context.startActivity(chooser)
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "Unable to share: ${e.message}", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
         }
     }
 
