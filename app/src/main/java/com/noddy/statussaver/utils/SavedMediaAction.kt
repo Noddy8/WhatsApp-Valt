@@ -1,3 +1,3 @@
 package com.noddy.statussaver.utils
 
-enum class SavedMediaAction { VIEW, DELETE, SHARE }
+enum class SavedMediaAction { VIEW, DELETE }

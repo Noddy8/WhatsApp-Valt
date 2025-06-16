@@ -13,12 +13,13 @@ import com.noddy.statussaver.utils.SavedMediaAction
 class SavedMediaAdapter(
     private val list: List<MediaModel>,
     private val context: Context,
-    private val onAction: (MediaModel, SavedMediaAction) -> Unit
+    private val onAction: (MediaModel, SavedMediaAction, Int) -> Unit
 ) : RecyclerView.Adapter<SavedMediaAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemSavedMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(mediaModel: MediaModel) {
+
+        fun bind(mediaModel: MediaModel, position: Int) {
             Glide.with(context)
                 .load(mediaModel.pathUri)
                 .into(binding.mediaThumbnail)
@@ -26,24 +27,26 @@ class SavedMediaAdapter(
             binding.videoPlayIcon.visibility =
                 if (mediaModel.type == "video") View.VISIBLE else View.GONE
 
-            binding.root.setOnClickListener { onAction(mediaModel, SavedMediaAction.VIEW) }
-            binding.deleteButton.setOnClickListener {
-                onAction(
-                    mediaModel,
-                    SavedMediaAction.DELETE
-                )
+            binding.root.setOnClickListener {
+                onAction(mediaModel, SavedMediaAction.VIEW, position)
             }
-            binding.shareButton.setOnClickListener { onAction(mediaModel, SavedMediaAction.SHARE) }
+            binding.deleteButton.setOnClickListener {
+                onAction(mediaModel, SavedMediaAction.DELETE, position)
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemSavedMediaBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemSavedMediaBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(list[position], position)
     }
 
     override fun getItemCount() = list.size
