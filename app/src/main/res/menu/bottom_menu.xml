@@ -8,6 +8,12 @@
         android:id="@+id/menu_business_status"
         android:icon="@drawable/ic_menu_wp_status"
         android:title="Business" />
+
+    <item
+        android:id="@+id/menu_saved"
+        android:icon="@drawable/ic_downloaded"
+        android:title="Saved"/>
+
 <!--    <item-->
 <!--        android:id="@+id/menu_favorites"-->
 <!--        android:icon="@drawable/ic_favorite_border"-->

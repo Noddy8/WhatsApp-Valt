@@ -19,6 +19,7 @@ import com.noddy.statussaver.utils.SharedPrefUtils
 import com.noddy.statussaver.utils.replaceFragment
 import com.noddy.statussaver.utils.slideFromStart
 import com.noddy.statussaver.utils.slideToEndWithFadeOut
+import com.noddy.statussaver.views.fragments.FragmentSavedMedia
 import com.noddy.statussaver.views.fragments.FragmentSettings
 import com.noddy.statussaver.views.fragments.FragmentStatus
 
@@ -63,6 +64,11 @@ class MainActivity : AppCompatActivity() {
                             Constants.TYPE_WHATSAPP_BUSINESS
                         )
                         replaceFragment(fragmentWhatsAppStatus, bundle)
+                        true
+                    }
+
+                    R.id.menu_saved -> {
+                        replaceFragment(FragmentSavedMedia())
                         true
                     }
 
