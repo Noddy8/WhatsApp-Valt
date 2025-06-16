@@ -67,6 +67,7 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                     // Already a content URI
                     Uri.parse(mediaModel.pathUri)
                 }
+
                 mediaModel.pathUri.startsWith("file://") -> {
                     // File URI - convert to File and then to content URI
                     val file = File(Uri.parse(mediaModel.pathUri).path ?: mediaModel.pathUri)
@@ -77,10 +78,15 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                             file
                         )
                     } else {
-                        Toast.makeText(context, "File not found at: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "File not found at: ${file.absolutePath}",
+                            Toast.LENGTH_LONG
+                        ).show()
                         return
                     }
                 }
+
                 else -> {
                     // Plain file path
                     val file = File(mediaModel.pathUri)
@@ -91,7 +97,11 @@ class ImagePreviewAdapter(val list: ArrayList<MediaModel>, val context: Context)
                             file
                         )
                     } else {
-                        Toast.makeText(context, "File not found at: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "File not found at: ${file.absolutePath}",
+                            Toast.LENGTH_LONG
+                        ).show()
                         return
                     }
                 }
