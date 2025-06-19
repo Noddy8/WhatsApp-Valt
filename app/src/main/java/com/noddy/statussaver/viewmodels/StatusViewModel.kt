@@ -55,6 +55,19 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
         }
     }
 
+    fun isWhatsAppBusinessPermissionGranted(): Boolean {
+        return SharedPrefUtils.getPrefBoolean(
+            SharedPrefKeys.PREF_KEY_WP_BUSINESS_PERMISSION_GRANTED,
+            false
+        )
+    }
+
+    fun refreshWhatsAppStatuses() {
+        CoroutineScope(Dispatchers.IO).launch {
+            repo.getAllStatuses()
+        }
+    }
+
     fun getWhatsAppStatuses() {
         CoroutineScope(Dispatchers.IO).launch {
             if (!isPermissionsGranted) {

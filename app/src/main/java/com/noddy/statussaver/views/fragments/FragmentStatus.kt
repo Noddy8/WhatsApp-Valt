@@ -29,7 +29,6 @@ class FragmentStatus : Fragment() {
     }
     private lateinit var type: String
     private val WHATSAPP_REQUEST_CODE = 101
-    private val WHATSAPP_BUSINESS_REQUEST_CODE = 102
 
     private val viewPagerTitles = arrayListOf("Images", "Videos")
     lateinit var viewModel: StatusViewModel
@@ -79,37 +78,6 @@ class FragmentStatus : Fragment() {
                         }.attach()
 
                     }
-
-                    Constants.TYPE_WHATSAPP_BUSINESS -> {
-                        val isPermissionGranted = SharedPrefUtils.getPrefBoolean(
-                            SharedPrefKeys.PREF_KEY_WP_BUSINESS_PERMISSION_GRANTED,
-                            false
-                        )
-                        if (isPermissionGranted) {
-                            getWhatsAppBusinessStatuses()
-
-                            binding.swipeRefreshLayout.setOnRefreshListener {
-                                refreshStatuses()
-                            }
-
-                        }
-                        permissionLayout.btnPermission.setOnClickListener {
-                            getFolderPermissions(
-                                context = requireActivity(),
-                                REQUEST_CODE = WHATSAPP_BUSINESS_REQUEST_CODE,
-                                initialUri = Constants.getWhatsappBusinessUri()
-                            )
-                        }
-                        val viewPagerAdapter = MediaViewPagerAdapter(
-                            requireActivity(),
-                            imagesType = Constants.MEDIA_TYPE_WHATSAPP_BUSINESS_IMAGES,
-                            videosType = Constants.MEDIA_TYPE_WHATSAPP_BUSINESS_VIDEOS
-                        )
-                        statusViewPager.adapter = viewPagerAdapter
-                        TabLayoutMediator(tabLayout, statusViewPager) { tab, pos ->
-                            tab.text = viewPagerTitles[pos]
-                        }.attach()
-                    }
                 }
 
             }
@@ -128,15 +96,6 @@ class FragmentStatus : Fragment() {
                     .show()
                 getWhatsAppStatuses()
             }
-
-            else -> {
-                Toast.makeText(
-                    requireActivity(),
-                    "Refreshing WP Business Statuses",
-                    Toast.LENGTH_SHORT
-                ).show()
-                getWhatsAppBusinessStatuses()
-            }
         }
 
         Handler(Looper.myLooper()!!).postDelayed({
@@ -150,13 +109,6 @@ class FragmentStatus : Fragment() {
         viewModel.getWhatsAppStatuses()
     }
 
-    private val TAG = "FragmentStatus"
-    fun getWhatsAppBusinessStatuses() {
-        // function to get wp statuses
-        binding.permissionLayoutHolder.visibility = View.GONE
-        Log.d(TAG, "getWhatsAppBusinessStatuses: Getting Wp Business Statuses")
-        viewModel.getWhatsAppBusinessStatuses()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -175,23 +127,13 @@ class FragmentStatus : Fragment() {
                 )
                 SharedPrefUtils.putPrefBoolean(SharedPrefKeys.PREF_KEY_WP_PERMISSION_GRANTED, true)
                 getWhatsAppStatuses()
-            } else if (requestCode == WHATSAPP_BUSINESS_REQUEST_CODE) {
-                // whatsapp business logic here
-                SharedPrefUtils.putPrefString(
-                    SharedPrefKeys.PREF_KEY_WP_BUSINESS_TREE_URI,
-                    treeUri.toString()
-                )
-                SharedPrefUtils.putPrefBoolean(
-                    SharedPrefKeys.PREF_KEY_WP_BUSINESS_PERMISSION_GRANTED,
-                    true
-                )
-                getWhatsAppBusinessStatuses()
+            }
             }
         }
 
 
     }
-}
+
 
 
 

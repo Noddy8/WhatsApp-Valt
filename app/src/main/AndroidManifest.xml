@@ -18,6 +18,9 @@
         android:theme="@style/Theme.StatusSaver"
         tools:targetApi="31">
         <activity
+            android:name=".views.activities.BusinessStatusActivity"
+            android:exported="false" />
+        <activity
             android:name=".views.activities.SettingsActivity"
             android:exported="false" />
         <activity
