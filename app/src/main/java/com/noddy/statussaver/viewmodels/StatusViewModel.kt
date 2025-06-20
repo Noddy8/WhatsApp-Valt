@@ -68,6 +68,13 @@ class StatusViewModel(val repo: StatusRepo) : ViewModel() {
         }
     }
 
+    fun refreshWhatsAppBusinessStatuses() {
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.d(TAG, "refreshWhatsAppBusinessStatuses: Refreshing WP Business Statuses")
+            repo.getAllStatuses(Constants.TYPE_WHATSAPP_BUSINESS)
+        }
+    }
+
     fun getWhatsAppStatuses() {
         CoroutineScope(Dispatchers.IO).launch {
             if (!isPermissionsGranted) {

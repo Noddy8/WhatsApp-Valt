@@ -3,13 +3,14 @@ package com.noddy.statussaver.views.activities
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.noddy.statussaver.R
 import com.noddy.statussaver.data.StatusRepo
 import com.noddy.statussaver.databinding.ActivityBusinessStatusBinding
 import com.noddy.statussaver.utils.Constants
@@ -35,11 +36,27 @@ class BusinessStatusActivity : AppCompatActivity() {
 
         binding.toolBar.setNavigationOnClickListener { finish() }
 
-        SharedPrefUtils.init(this)
-        setupViewPager()
-        checkPermissionsAndLoad()
+        // Check if WhatsApp Business is installed
+        if (isPackageInstalled(Constants.TYPE_WHATSAPP_BUSINESS)) {
+            SharedPrefUtils.init(this)
+            setupViewPager()
+            checkPermissionsAndLoad()
+        } else {
+            Toast.makeText(this, "WhatsApp Business is not installed", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
     }
-    
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        return try {
+            packageManager.getPackageInfo(packageName, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+    }
+
     private fun setupViewPager() {
         val adapter = MediaViewPagerAdapter(
             this,
@@ -58,12 +75,28 @@ class BusinessStatusActivity : AppCompatActivity() {
         }.attach()
     }
 
+    private fun setupSwipeRefresh() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            refreshBusinessStatuses()
+        }
+    }
+
+    private fun refreshBusinessStatuses() {
+        viewModel.refreshWhatsAppBusinessStatuses()
+        Toast.makeText(this, "Refreshing WP Statuses", Toast.LENGTH_SHORT)
+            .show()
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.swipeRefreshLayout.isRefreshing = false
+        }, 2000)
+    }
+
     private fun checkPermissionsAndLoad() {
         if (viewModel.isWhatsAppBusinessPermissionGranted()) {
             loadBusinessStatuses()
         } else {
             requestPermissions()
         }
+        setupSwipeRefresh()
     }
 
     private fun loadBusinessStatuses() {

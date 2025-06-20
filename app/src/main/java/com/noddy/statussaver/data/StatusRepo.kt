@@ -29,6 +29,15 @@ class StatusRepo(val context: Context) {
     private val TAG = "StatusRepo"
 
     fun getAllStatuses(whatsAppType: String = Constants.TYPE_WHATSAPP_MAIN) {
+        // Clear existing lists before refreshing
+        when (whatsAppType) {
+            Constants.TYPE_WHATSAPP_MAIN -> {
+                whatsAppStatusesLiveData.value?.clear()
+            }
+            else -> {
+                whatsAppBusinessStatusesLiveData.value?.clear()
+            }
+        }
         val treeUri = when (whatsAppType) {
             Constants.TYPE_WHATSAPP_MAIN -> {
                 SharedPrefUtils.getPrefString(SharedPrefKeys.PREF_KEY_WP_TREE_URI, "")?.toUri()!!
