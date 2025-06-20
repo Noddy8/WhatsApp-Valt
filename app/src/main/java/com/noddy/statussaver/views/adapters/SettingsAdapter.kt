@@ -14,6 +14,7 @@ import com.noddy.statussaver.R
 import com.noddy.statussaver.databinding.DialogGuideBinding
 import com.noddy.statussaver.databinding.ItemSettingsBinding
 import com.noddy.statussaver.models.SettingsModel
+import com.noddy.statussaver.views.activities.PrivacyPolicyActivity
 
 class SettingsAdapter(var list: ArrayList<SettingsModel>, var context: Context) :
     RecyclerView.Adapter<SettingsAdapter.viewHolder>() {
@@ -57,10 +58,9 @@ class SettingsAdapter(var list: ArrayList<SettingsModel>, var context: Context) 
                         }
 
                         3 -> {
-                            Intent(Intent.ACTION_VIEW, Uri.parse("https://atrii.dev")).apply {
+                            Intent(context, PrivacyPolicyActivity::class.java).apply {
                                 context.startActivity(this)
                             }
-
                         }
 
                         4 -> {

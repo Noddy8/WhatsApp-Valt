@@ -5,12 +5,15 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayoutMediator
+import com.noddy.statussaver.R
 import com.noddy.statussaver.data.StatusRepo
 import com.noddy.statussaver.databinding.ActivityBusinessStatusBinding
 import com.noddy.statussaver.utils.Constants
@@ -35,17 +38,19 @@ class BusinessStatusActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.toolBar.setNavigationOnClickListener { finish() }
+        SharedPrefUtils.init(this)
 
         // Check if WhatsApp Business is installed
-        if (isPackageInstalled(Constants.TYPE_WHATSAPP_BUSINESS)) {
-            SharedPrefUtils.init(this)
-            setupViewPager()
-            checkPermissionsAndLoad()
-        } else {
-            Toast.makeText(this, "WhatsApp Business is not installed", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
+//        if (!isPackageInstalled(Constants.TYPE_WHATSAPP_BUSINESS)) {
+//            Toast.makeText(this, "WhatsApp Business is not installed", Toast.LENGTH_SHORT).show()
+//            finish()
+//            return
+//        }
+
+        setupViewPager()
+        setupPermissionButton()
+        checkPermissionsAndLoad()
+        setupSwipeRefresh()
     }
 
     private fun isPackageInstalled(packageName: String): Boolean {
@@ -75,6 +80,13 @@ class BusinessStatusActivity : AppCompatActivity() {
         }.attach()
     }
 
+    private fun setupPermissionButton() {
+        val permissionButton: MaterialButton = binding.permissionLayoutHolder.findViewById(R.id.btn_permission)
+        permissionButton.setOnClickListener {
+            requestPermissions()
+        }
+    }
+
     private fun setupSwipeRefresh() {
         binding.swipeRefreshLayout.setOnRefreshListener {
             refreshBusinessStatuses()
@@ -83,8 +95,7 @@ class BusinessStatusActivity : AppCompatActivity() {
 
     private fun refreshBusinessStatuses() {
         viewModel.refreshWhatsAppBusinessStatuses()
-        Toast.makeText(this, "Refreshing WP Statuses", Toast.LENGTH_SHORT)
-            .show()
+        Toast.makeText(this, "Refreshing WP Business Statuses", Toast.LENGTH_SHORT).show()
         Handler(Looper.getMainLooper()).postDelayed({
             binding.swipeRefreshLayout.isRefreshing = false
         }, 2000)
@@ -92,11 +103,13 @@ class BusinessStatusActivity : AppCompatActivity() {
 
     private fun checkPermissionsAndLoad() {
         if (viewModel.isWhatsAppBusinessPermissionGranted()) {
+            binding.permissionLayoutHolder.visibility = View.GONE
+            binding.swipeRefreshLayout.visibility = View.VISIBLE
             loadBusinessStatuses()
         } else {
-            requestPermissions()
+            binding.permissionLayoutHolder.visibility = View.VISIBLE
+            binding.swipeRefreshLayout.visibility = View.GONE
         }
-        setupSwipeRefresh()
     }
 
     private fun loadBusinessStatuses() {
@@ -107,6 +120,7 @@ class BusinessStatusActivity : AppCompatActivity() {
 
     private fun requestPermissions() {
         getFolderPermissions(
+
             context = this,
             REQUEST_CODE = WHATSAPP_BUSINESS_REQUEST_CODE,
             initialUri = Constants.getWhatsappBusinessUri()
@@ -131,7 +145,7 @@ class BusinessStatusActivity : AppCompatActivity() {
                     SharedPrefKeys.PREF_KEY_WP_BUSINESS_PERMISSION_GRANTED,
                     true
                 )
-                loadBusinessStatuses()
+                checkPermissionsAndLoad() // Update UI after permission grant
             }
         }
     }
